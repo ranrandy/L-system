@@ -36,7 +36,7 @@ def draw_lsystem(axiom):
     t.color('green')
 
     # Pen settings
-    color = [0.35, 0.2, 0.0]
+    color = [0.0, 0.0, 0.0]
     thickness = 2
     step = 18
 
