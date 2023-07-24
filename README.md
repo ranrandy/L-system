@@ -1,3 +1,9 @@
+<style>
+    tr {
+        background-color: white;
+    }
+</style>
+
 # L-system
 
 This repo explores implementing trees and city maps/layouts using the L-system and PyGame. 
