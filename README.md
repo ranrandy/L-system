@@ -2,12 +2,12 @@
 
 This repo explores implementing trees and city maps/layouts using the L-system and PyGame. 
 
-The following 
+The following city maps/layouts are generated using ...
 
 ## Improved 2D City Layout
 ## 2D City Layout
 
----
+
 
 The following plants images are generated using production rules from [[1]](http://algorithmicbotany.org/papers/abop/abop.pdf). For simplicity, we only care about deterministic context free L-systems (DOL-Systems).
 
@@ -50,6 +50,4 @@ Modify parameters in `tree-2d.py` based on Figure 1.24 in Sec 1.6.3 Bracketed OL
 # Reference:
 [1] [The Algorithmic Beauty of Plants](http://algorithmicbotany.org/papers/abop/abop.pdf) - Przemyslaw Prusinkiewicz and Aristid Lindenmayer
 
----
-Some other resources I found useful, especially at the beginning:
-[Fractal Trees - L-System](https://youtu.be/E1B4UoSQMFw) - The Coding Train
+[2] [Fractal Trees - L-System](https://youtu.be/E1B4UoSQMFw) - The Coding Train
