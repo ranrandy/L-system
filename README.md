@@ -16,7 +16,7 @@ The following plants images are generated using production rules from [[1]](http
 ## 3D Trees
 ## 2D Trees
 Modify parameters in `tree-2d.py` based on Figure 1.24 in Sec 1.6.3 Bracketed OL-systems (p.25), then run `python tree-2d.py`
-<table>
+<table background-color="white">
     <tr>
         <td>
             <img src="outputs/l_system_tree_2d_a.png" alt="(a)" width="220">
