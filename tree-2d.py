@@ -2,12 +2,14 @@ import turtle
 from PIL import Image
 import os
 
-axiom = "F"
+axiom = "X"
 rules = {
-    "F": "FF-[-F+F+F]+[+F-F-F]",
+    "X": "F-[[X]+X]+F[+FX]-X",
+    "F": "FF"
 }
-iterations = 4
+iterations = 5
 delta = 22.5
+fileName = "l_system_tree_2d_f"
 
 def generate_lsystem(axiom, rules, iterations):
     def apply_rules(axiom, rules):
@@ -38,7 +40,7 @@ def draw_lsystem(axiom):
     # Pen settings
     color = [0.0, 0.0, 0.0]
     thickness = 2
-    step = 18
+    step = 16
 
     # Draw
     stack = []
@@ -64,10 +66,10 @@ def draw_lsystem(axiom):
             t.pendown()
     
     # Convert the PostScript file to PNG
-    screen.getcanvas().postscript(file="l_system_tree_2d.eps")
-    img = Image.open("l_system_tree_2d.eps")
-    img.save("l_system_tree_2d.png", "png")
-    os.remove("l_system_tree_2d.eps")
+    screen.getcanvas().postscript(file=f"{fileName}.eps")
+    img = Image.open(f"{fileName}.eps")
+    img.save(f"{fileName}.png", "png")
+    os.remove(f"{fileName}.eps")
 
     turtle.done()
 
