@@ -1,9 +1,3 @@
-<style>
-    tr {
-        background-color: white;
-    }
-</style>
-
 # L-system
 
 This repo explores implementing trees and city maps/layouts using the L-system and PyGame. 
@@ -23,7 +17,7 @@ The following plants images are generated using production rules from [[1]](http
 ## 2D Trees
 Modify parameters in `tree-2d.py` based on Figure 1.24 in Sec 1.6.3 Bracketed OL-systems (p.25), then run `python tree-2d.py`
 <table>
-    <tr>
+    <tr style="background-color: white;">
         <td>
             <img src="outputs/l_system_tree_2d_a.png" alt="(a)" width="220">
             <p align="center">(a)</p>
@@ -37,9 +31,7 @@ Modify parameters in `tree-2d.py` based on Figure 1.24 in Sec 1.6.3 Bracketed OL
             <p align="center">(c)</p>
         </td>
     </tr>
-</table>
-<table>
-    <tr>
+    <tr style="background-color: white;">
         <td>
             <img src="outputs/l_system_tree_2d_d.png" alt="(d)" width="220">
             <p align="center">(d)</p>
