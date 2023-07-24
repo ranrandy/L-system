@@ -3,7 +3,7 @@
 This repo explores implementing trees and city maps/layouts using the L-system and PyGame.
 
 
-<div align="center">
+<div>
     <h3>Simple 2D Tree</h3>
     <img src="l_system_tree_2d.png" alt="l_system_tree_2d" height="300" />
 </div>
