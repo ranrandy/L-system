@@ -9,7 +9,7 @@ if __name__ == "__main__":
             initX, initY, imageWidth, imageHeight, 
             penColor, penColorIncrementStep, 
             penThickness, penThicknessDecrementStep, 
-            penStep)
+            penStep, hasLeaf)
     else: # dimension == 3:
         if parametric:
             lsystem = LSystem3DParametric(
@@ -17,22 +17,25 @@ if __name__ == "__main__":
                 initX, initY, imageWidth, imageHeight, 
                 penColor, penColorIncrementStep, 
                 penThickness, penThicknessDecrementStep, 
-                penStep)
+                penStep, hasLeaf)
         else:
             lsystem = LSystem3D(
                 axiom, rules, iterations, delta, fileName, 
                 initX, initY, imageWidth, imageHeight, 
                 penColor, penColorIncrementStep, 
                 penThickness, penThicknessDecrementStep, 
-                penStep)
+                penStep, hasLeaf)
         lsystem.init3D(initX, initY, initZ)
 
     lsystem.generate_lsystem()
     # print(lsystem.result)
+
     if dimension == 3:
         lsystem.generate_nodes_edges()
+
     lsystem.draw()
     lsystem.save()
+
     if hasLeaf:
         os.remove(f"{fileName}.png")
         print("Please save the screenshot by yourself." 

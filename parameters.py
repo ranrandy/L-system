@@ -28,73 +28,72 @@ import numpy as np
 
 
 ###### Figure 1.25
-axiom = "A"
-rules = {
-    "A": "[&&FL!A]/////'[&FL!A]///////'[&FL!A]",
-    "F": "S/////F",
-    "S": "FL",
-    "L": "['''^^{-f+f+f-|-f+f+f}]"
-}
-iterations = 7
-delta = 22.5
-fileName = "outputs/l_system_tree_3d_Figure_1_25"
+# axiom = "A"
+# rules = {
+#     "A": "[&&FL!A]/////'[&FL!A]///////'[&FL!A]",
+#     "F": "S/////F",
+#     "S": "FL",
+#     "L": "['''^^{-f+f+f-|-f+f+f}]"
+# }
+# iterations = 7
+# delta = 22.5
+# fileName = "outputs/l_system_tree_3d_Figure_1_25"
 
-initX = -20
-initY = -370
-initZ = 0
+# initX = -20
+# initY = -370
+# initZ = 0
 
-imageWidth = 1000
-imageHeight = 800
+# imageWidth = 1000
+# imageHeight = 800
 
-penColor = np.array([0.2, 0.1, 0.03])
-penColorIncrementStep = 0.03
+# penColor = np.array([0.2, 0.1, 0.03])
+# penColorIncrementStep = 0.03
 
-penThickness = 10
-penThicknessDecrementStep = 1.2
-penStep = 23
+# penThickness = 10
+# penThicknessDecrementStep = 1.2
+# penStep = 23
 
-dimension = 3
-parametric = False
-hasLeaf = True
+# dimension = 3
+# parametric = False
+# hasLeaf = True
 
 
 
 
 ###### Chapter 2 Modeling of Trees
-# axiom = [("!", 1), ("F", 200), ("A")] 
-# d1 = 94.97
-# d2 = 132.63
-# a = 18.95
-# lr = 1.109
-# vr = 1.732
-# rules = {
-#     "A": lambda : [("!", vr), ("F", 50), 
-#                    ("["), ("&", a), ("F", 50), ("A"), ("]"),
-#                    ("/", d1),
-#                    ("["), ("&", a), ("F", 50), ("A"), ("]"),
-#                    ("/", d2),
-#                    ("["), ("&", a), ("F", 50), ("A"), ("]"),
-#                    ("A")], 
-#     "F": lambda step : ("F", step * lr),
-#     "!": lambda width : ("!", width * vr)
-# }
-# iterations = 4
-# delta = 22.5
-# fileName = "outputs/l_system_tree_3d_a"
+axiom = [("!", 1/2), ("F", 200/2), ("/", 45/2), ("A")] 
+d1 = 94.97
+d2 = 132.63
+a = 18.95
+lr = 1.109
+vr = 1.732
+rules = {
+    "A": lambda : [("!", vr/2), ("F", 50/2), 
+                   ("["), ("&", a), ("F", 50/2), ("A"), ("]"),
+                   ("/", d1),
+                   ("["), ("&", a), ("F", 50/2), ("A"), ("]"),
+                   ("/", d2),
+                   ("["), ("&", a), ("F", 50/2), ("A"), ("]")], 
+    "F": lambda step : ("F", step * lr),
+    "!": lambda width : ("!", width * vr)
+}
+iterations = 6
+delta = None
+fileName = "outputs/l_system_tree_3d_a"
 
-# initX = -50
-# initY = -490
-# initZ = 0
+initX = 0
+initY = -280
+initZ = 0
 
-# imageWidth = 1000
-# imageHeight = 1000
+imageWidth = 550
+imageHeight = 600
 
-# penColor = [0.01, 0.1, 0.01]
-# penColorIncrementStep = 0.04
+penColor = [0, 0, 0]
+penColorIncrementStep = None
+penThickness = None
+penThicknessDecrementStep = None
+penStep = None
 
-# penThickness = 2
-# penThicknessDecrementStep = 0.2
-# penStep = 16
-
-# dimension = 3
-# parametric = True
+dimension = 3
+parametric = True
+hasLeaf = False
