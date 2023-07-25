@@ -4,18 +4,22 @@ This repo explores implementing trees and city maps/layouts using the L-system a
 
 The following city maps/layouts are generated using ...
 
-## Improved 2D City Layout
 ## 2D City Layout
-
-
 
 The following plants images are generated using production rules from [[1]](http://algorithmicbotany.org/papers/abop/abop.pdf). For simplicity, we only care about deterministic context free L-systems (DOL-Systems).
 
-## Improved 3D Trees
-## Improved 2D Trees
 ## 3D Trees
+Production rule includes rotations in 3D. Positions become 3D instead of 2D.
+
+<b>IMPORTANT:</b> All the 3D rotations here refer to rotations relative to the current Heading (H), Left (L), and Up (U) directions, but not fixed coordinates like in the traditional yaw, roll, and pitch rotations.
+
+For simplicity, we only do a orthogonal projection of the 3D tree onto the xy plane.
+<div align="center">
+<img src="outputs/l_system_tree_3d_Figure_1_25.png" alt="(a)" width="500">
+</div>
+
 ## 2D Trees
-Parameters referred to Figure 1.24 in Sec 1.6.3 Bracketed OL-systems (p.25).
+Given an axiom, a production rule, and the number of iterations, we draw all the branches of the tree starting from an initial point. Each branch comes from an array of operations to draw on the screen using Turtle. Parameters referred to Figure 1.24 in Sec 1.6.3 Bracketed OL-systems (p.25).
 <table>
     <tr>
         <td>

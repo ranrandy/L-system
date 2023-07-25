@@ -3,8 +3,8 @@ from PIL import Image
 import os
 
 
-class LSystem:
-    def __init__(self, axiom, rules, iterations, delta, FilePath, initX, initY, penColor, penThickness, penStep):
+class LSystem2D:
+    def __init__(self, axiom, rules, iterations, delta, FilePath, initX, initY, imageWidth, imageHeight, penColor, penColorIncrementStep, penThickness, penThicknessDecrementStep, penStep):
         # For generating the sequence of characters
         self.axiom = axiom
         self.rules = rules
@@ -15,7 +15,7 @@ class LSystem:
 
         # Screen settings
         self.screen = turtle.Screen()
-        self.screen.setup(800, 1000)
+        self.screen.setup(imageWidth, imageHeight)
         self.screen.delay(0)
 
         # turtle settings
@@ -29,7 +29,11 @@ class LSystem:
 
         # Pen settings
         self.penColor = penColor
+        self.penColorIncrementStep = penColorIncrementStep
+
         self.penThickness = penThickness
+        self.penThicknessDecrementStep = penThicknessDecrementStep
+
         self.penStep = penStep
     
     # Generate the sequence of characters
@@ -44,7 +48,6 @@ class LSystem:
             self.apply_rules()
     
     def draw(self):
-        # Draw
         stack = []
         self.t.left(90)
         self.t.pensize(self.penThickness)
@@ -52,26 +55,284 @@ class LSystem:
             self.t.color(self.penColor)
             if chr == 'F':
                 self.t.forward(self.penStep)
+            elif chr == 'f':
+                self.t.penup()
+                self.t.forward(self.penStep)
+                self.t.pendown()
             elif chr == '+':
                 self.t.left(self.delta)
             elif chr == '-':
                 self.t.right(self.delta)
             elif chr == '[':
                 angle_, pos_ = self.t.heading(), self.t.pos()
-                stack.append((angle_, pos_, self.penThickness, self.penStep, self.penColor))
+                stack.append((angle_, pos_, self.penThickness, self.penStep, self.penColor[1]))
             elif chr == ']':
-                angle_, pos_, self.penThickness, self.penStep, self.penColor = stack.pop()
+                angle_, pos_, self.penThickness, self.penStep, self.penColor[1] = stack.pop()
                 self.t.pensize(self.penThickness)
                 self.t.setheading(angle_)
                 self.t.penup()
                 self.t.goto(pos_)
                 self.t.pendown()
+            elif chr == '\'':
+                self.penColor[1] += self.penColorIncrementStep
+            elif chr == '!':
+                self.penThickness -= self.penThicknessDecrementStep
         
     def save(self):
+        # self.screen.update()
         # Convert the PostScript file to PNG
         self.screen.getcanvas().postscript(file=f"{self.saveFilePath}.eps")
         img = Image.open(f"{self.saveFilePath}.eps")
-        img.save(f"{self.saveFilePath}.png", "png")
+        img.save(f"{self.saveFilePath}.png", "png", dpi=(5000, 5000))
         os.remove(f"{self.saveFilePath}.eps")
 
         turtle.done()
+
+
+import networkx as nx
+import numpy as np
+
+class LSystem3D(LSystem2D):
+    def init3D(self, initX, initY, initZ):
+        self.G = nx.DiGraph()
+
+        # Initialize heading, left, and up directions
+        # self.H = np.array([0, 1, 0])
+        # self.L = np.array([-1, 0, 0])
+        # self.U = np.array([0, 0, 1])
+        # self.HLU = np.array([self.H, self.L, self.U]).T
+        self.HLU = np.array([
+            [0, 1, 0], # H
+            [-1, 0, 0], # L
+            [0, 0, 1]] # U
+            ).T
+
+        self.G.add_node("root", position=np.array([initX, initY, initZ]))
+    
+    # Set up the roll, pitch, and yaw matrices. 
+    # These rotation matrices are relative to the current H, L, U matrices. 
+    # So they are NOT fixed!!!!!!!!
+    def R(self, axis, angle):
+        axis = axis / np.linalg.norm(axis)
+
+        # Compute the skew-symmetric matrix K for the axis
+        K = np.array([[0, -axis[2], axis[1]],
+                    [axis[2], 0, -axis[0]],
+                    [-axis[1], axis[0], 0]])
+
+        # Compute the rotation matrix using Rodrigues' rotation formula
+        R = np.identity(3) + np.sin(angle) * K + (1 - np.cos(angle)) * np.dot(K, K)
+
+        return R
+
+
+    def generate_nodes_edges(self):
+        stack = []
+
+        last_node = "root"
+        node_i = 0
+        curr_node = f"node{node_i}"
+
+        leaves = []
+        leaf_colors = []
+        curr_leaf_nodes = []
+
+        for chr in self.result:
+            if chr == '!':
+                self.penThickness -= self.penThicknessDecrementStep
+            elif chr == '\'':
+                self.penColor += self.penColorIncrementStep
+            elif chr == 'F':
+                self.G.add_node(curr_node, position=(
+                    self.G.nodes[last_node]["position"] + self.penStep * self.HLU[:, 0]
+                ))
+                self.G.add_edge(last_node, curr_node)
+                self.G.edges[(last_node, curr_node)]["diameter"] = self.penThickness
+                self.G.edges[(last_node, curr_node)]["color"] = self.penColor
+                last_node = curr_node
+                node_i += 1
+                curr_node = f"node{node_i}"
+            elif chr == 'f': # symbol f is used to bound the area of leaves
+                if len(curr_leaf_nodes) == 0:
+                    curr_leaf_nodes.append(
+                        self.G.nodes[last_node]["position"] + self.penStep * self.HLU[:, 0]
+                    )
+                else:
+                    curr_leaf_nodes.append(
+                        curr_leaf_nodes[-1] + self.penStep * self.HLU[:, 0]
+                    )
+            elif chr == '+':
+                self.HLU = self.R(self.HLU[:, 2], self.delta * np.pi / 180.0) @ self.HLU
+            elif chr == '-':
+                self.HLU = self.R(self.HLU[:, 2], -self.delta * np.pi / 180.0) @ self.HLU
+            elif chr == '&':
+                self.HLU = self.R(self.HLU[:, 1], self.delta * np.pi / 180.0) @ self.HLU
+            elif chr == '^':
+                self.HLU = self.R(self.HLU[:, 1], -self.delta * np.pi / 180.0) @ self.HLU
+            elif chr == '/':
+                self.HLU = self.R(self.HLU[:, 0], self.delta * np.pi / 180.0) @ self.HLU
+            elif chr == '\\':
+                self.HLU = self.R(self.HLU[:, 0], -self.delta * np.pi / 180.0) @ self.HLU
+            elif chr == '|':
+                self.HLU = self.R(self.HLU[:, 2], np.pi) @ self.HLU
+            elif chr == '[':
+                stack.append((self.HLU, self.penThickness, self.penStep, self.penColor.copy(), last_node))
+            elif chr == ']':
+                self.HLU, self.penThickness, self.penStep, self.penColor, last_node = stack.pop()
+            elif chr == '}':
+                leaves.append(curr_leaf_nodes) 
+                curr_leaf_nodes = []
+                leaf_colors.append([0.1, self.penColor[1] + 0.1, 0.1])
+        self.leaves = leaves
+        self.leaf_colors = leaf_colors
+
+    def draw(self):
+        # Draw trunk and branches
+        for edge in self.G.edges:
+            self.t.penup()
+            self.t.goto(self.G.nodes[edge[0]]["position"][0], self.G.nodes[edge[0]]["position"][1])
+            self.t.pendown()
+            self.t.pensize(self.G.edges[edge]["diameter"])
+            self.t.pencolor(self.G.edges[edge]["color"])
+            self.t.goto(self.G.nodes[edge[1]]["position"][0], self.G.nodes[edge[1]]["position"][1])
+        
+        # Draw leaves
+        self.t.penup()
+        for leaf_nodes, leaf_color in zip(self.leaves, self.leaf_colors):
+            self.t.begin_fill()
+            self.t.fillcolor([0.1, leaf_color[1] + 0.1, 0.1])
+            self.t.goto(leaf_nodes[0][00], leaf_nodes[0][1])
+            for i in range(1, len(leaf_nodes)):
+                self.t.goto(leaf_nodes[i][0], leaf_nodes[i][1])
+            self.t.goto(leaf_nodes[0][0], leaf_nodes[0][1])
+            self.t.end_fill()
+
+
+class LSystem3DParametric(LSystem3D):
+    # Generate the list of parametric characters
+    def apply_rules(self):
+        result = []
+        for tuple_i in self.result:
+            mapping = self.rules.get(tuple_i[0])
+            if mapping:
+                if len(tuple_i) == 1:
+                    if type(mapping()) is list:
+                        result += mapping()
+                    else:
+                        result.append(mapping())
+                else:
+                    result.append(mapping(*tuple_i[1:]))
+            else:
+                result.append(tuple_i)
+        self.result = result
+
+    def generate_lsystem(self):
+        for _ in range(self.iterations):
+            self.apply_rules()
+        print(self.result)
+
+    def init3D(self, initX, initY, initZ):
+        self.G = nx.DiGraph()
+
+        # Initialize heading, left, and up directions
+        self.H = np.array([0, 1, 0])
+        self.L = np.array([-1, 0, 0])
+        self.U = np.array([0, 0, 1])
+        self.HLU = np.array([self.H, self.L, self.U]).T
+
+        self.G.add_node("root", position=np.array([initX, initY, initZ]))
+    
+    # Set up the roll, pitch, and yaw matrices
+    def RU(self, alpha):
+        return np.array([
+            [ np.cos(alpha), np.sin(alpha), 0],
+            [-np.sin(alpha), np.cos(alpha), 0],
+            [             0,             0, 1]])
+    
+    def RL(self, alpha):
+        return np.array([
+            [np.cos(alpha), 0, -np.sin(alpha)],
+            [            0, 1,              0],
+            [np.sin(alpha), 0, np.cos(alpha)]])
+
+    def RH(self, alpha):
+        return np.array([
+            [1,             0,              0],
+            [0, np.cos(alpha), -np.sin(alpha)],
+            [0, np.sin(alpha),  np.cos(alpha)]])
+    
+    def R(self, axis, angle):
+        # Normalize the axis vector to make it a unit vector
+        axis = axis / np.linalg.norm(axis)
+        
+        # Calculate the skew-symmetric matrix for the unit axis vector
+        K = np.array([[0, -axis[2], axis[1]],
+                    [axis[2], 0, -axis[0]],
+                    [-axis[1], axis[0], 0]])
+        
+        # Calculate the rotation matrix using Rodrigues' formula
+        R = np.eye(3) + np.sin(angle) * K + (1 - np.cos(angle)) * np.dot(K, K)
+        
+        return R
+
+    def generate_nodes_edges(self):
+        stack = []
+        last_node = "root"
+        node_i = 0
+        curr_node = f"node{node_i}"
+
+        for tuple_i in self.result:
+            if tuple_i[0] == '!':
+                self.penThickness = tuple_i[1]
+            elif tuple_i[0] == 'F':
+                self.penStep = tuple_i[1]
+                self.G.add_node(curr_node, position=(
+                    self.G.nodes[last_node]["position"] + self.penStep * self.H
+                ))
+                self.G.add_edge(last_node, curr_node)
+                self.G.edges[(last_node, curr_node)]["diameter"] = self.penThickness
+                last_node = curr_node
+                node_i += 1
+                curr_node = f"node{node_i}"
+            elif tuple_i[0] == 'f':
+                self.penStep = tuple_i[1]
+                self.G.add_node(curr_node, position=(
+                    self.G.nodes[last_node]["position"] + self.penStep * self.H
+                ))
+                last_node = curr_node
+                node_i += 1
+                curr_node = f"node{node_i}"
+            elif tuple_i[0] == '+':
+                self.HLU = self.HLU @ self.R(self.U, tuple_i[1])
+            elif tuple_i[0] == '&':
+                self.HLU = self.HLU @ self.R(self.L, tuple_i[1])
+            elif tuple_i[0] == '/':
+                self.HLU = self.HLU @ self.R(self.H, -tuple_i[1])
+            elif tuple_i[0] == '[':
+                stack.append((self.H, self.L, self.U, self.penThickness, self.penStep, last_node))
+            elif tuple_i[0] == ']':
+                self.H, self.L, self.U, self.penThickness, self.penStep, last_node = stack.pop()
+            self.H = self.HLU[:, 0]
+            self.L = self.HLU[:, 1]
+            self.U = self.HLU[:, 2]
+    
+    def draw_3D_plt(self):
+        import matplotlib.pyplot as plt
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+
+        x_dots, y_dots, z_dots = [], [], []
+        for node in self.G.nodes:
+            x, y, z = self.G.nodes[node]["position"]
+            x_dots.append(x)
+            y_dots.append(y)
+            z_dots.append(z)
+        # ax.scatter(x_dots, y_dots, z_dots, color='red', marker='.')
+
+        for edge in self.G.edges:
+            width = self.G.edges[edge]["diameter"]
+            x1, y1, z1 = self.G.nodes[edge[0]]["position"]
+            x2, y2, z2 = self.G.nodes[edge[1]]["position"]
+            ax.plot([x1, x2], [y1, y2], [z1, z2], color='green')
+        plt.show()
