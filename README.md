@@ -127,7 +127,7 @@ The plants images are generated using L-systems from [[1]](http://algorithmicbot
             <td><img src="outputs/l_system_tree_3d_Figure_2_8_b.png" alt="l_system_tree_3d_Figure_2_8_b" width="500"><p align="center">(b)</p></td>
         </tr>
     </table>
-    There actually is some problems with my output images using Figure 2.8 parameters. But I will just let it go and move forward.
+    There actually are some problems with my output images using Figure 2.8 parameters. But I will just let it go and move forward.
 </div>
 
 ## Usage
