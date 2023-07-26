@@ -25,8 +25,8 @@ The plants images are generated using L-systems from [[1]](http://algorithmicbot
     * $f$, move towards $H$ for a distance of $l$ without drawing a line
     * $[$, start branching, push current node to stack
     * $]$, end branching, pop last node from stack
-    * $\{$, start outlining a leaf
-    * $\}$, end outlining a leaf
+    * {, start outlining a leaf
+    * }, end outlining a leaf
     * $'$, increase the current index of color
     * $A, B, C, ...$, do nothing
 * ### 2-Dimension 
