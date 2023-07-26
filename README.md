@@ -92,7 +92,7 @@ The plants images are generated using L-systems from [[1]](http://algorithmicbot
     <!-- </details> -->
 
 * ### Parametric
-    - $\forall s \in $ { $+, -,$ & $, \wedge, /, \backslash$}$, s($\alpha$) = rotate with $\alpha$ degree
+    - (+, -, & , $\wedge$, $/$, $\backslash$)($\alpha$) = rotate with $\alpha$ degree
     - F(l) = move towards $H$ for $l$
     - !(w) = set trunk/branch thickness to $w$
     - $A, B, C \rightarrow A(a_1, a_2, ...), B(...), ...$, do nothing
