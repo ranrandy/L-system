@@ -1,5 +1,5 @@
 # L-system
-The plants images are generated using L-systems from [[1]](http://algorithmicbotany.org/papers/abop/abop.pdf). For simplicity, we do not consider the stochastic and context sensitive L-systems. We do not generate high-resolution flowers, leaves, and so on, but only generate trees.
+The plants images/geometry (no mesh) are generated using L-systems from [[1]](http://algorithmicbotany.org/papers/abop/abop.pdf). For simplicity, we do not consider the stochastic and context sensitive L-systems. We do not generate high-resolution flowers, leaves, and so on, but only generate trees.
 ## 1. Definition
 * $V$, alphabet 
 * $w\in V^+$, axiom
