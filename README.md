@@ -119,19 +119,23 @@ The plants images are generated using L-systems from [[1]](http://algorithmicbot
             <td><img src="outputs/l_system_tree_3d_Figure_2_7_d.png" alt="l_system_tree_3d_Figure_2_7_d" width="250"><p align="center">(d)</p></td>
         </tr>
     </table>
+    <b>Ternary Branching and Tropism (like a force, for example, wind or gravity) Tree</b>
+    <b>Parameters refer to Figure 2.8 in [1]</b>
     <table>
         <tr>
             <td><img src="outputs/l_system_tree_3d_Figure_2_8_a.png" alt="l_system_tree_3d_Figure_2_8_a" width="500"><p align="center">(a)</p></td>
             <td><img src="outputs/l_system_tree_3d_Figure_2_8_b.png" alt="l_system_tree_3d_Figure_2_8_b" width="500"><p align="center">(b)</p></td>
         </tr>
     </table>
+    There actually is some problems with my output images using Figure 2.8 parameters. But I will just let it go and move forward.
 </div>
-    <!-- </details> -->
 
 ## Usage
 Install the `PythonTurtle`, `NetworkX`, and `NumPy` libraries.
 
 Set L-system parameters in `parameters.py` and run `python main.py` in the terminal.
+
+Remark: there might be error (eg, variable not defined) when you run earlier parameters. But the last few 3D cases should be correct.
 
 ## Reference:
 [1] [The Algorithmic Beauty of Plants](http://algorithmicbotany.org/papers/abop/abop.pdf) - Przemyslaw Prusinkiewicz and Aristid Lindenmayer

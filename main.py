@@ -25,7 +25,7 @@ if __name__ == "__main__":
                 penColor, penColorIncrementStep, 
                 penThickness, penThicknessDecrementStep, 
                 penStep, hasLeaf)
-        lsystem.init3D(initX, initY, initZ)
+        lsystem.init3D(initX, initY, initZ, T, e)
 
     lsystem.generate_lsystem()
     # print(lsystem.result)

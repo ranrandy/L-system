@@ -86,7 +86,7 @@ class LSystem2D:
                 self.penThickness -= self.penThicknessDecrementStep
         
     def save(self):
-        self.screen.update()
+        # self.screen.update()
         # Convert the PostScript file to PNG
         self.screen.getcanvas().postscript(file=f"{self.saveFilePath}.eps")
         img = Image.open(f"{self.saveFilePath}.eps")
@@ -100,7 +100,7 @@ import networkx as nx
 import numpy as np
 
 class LSystem3D(LSystem2D):
-    def init3D(self, initX, initY, initZ):
+    def init3D(self, initX, initY, initZ, T, e):
         self.G = nx.DiGraph()
 
         # Initialize heading, left, and up directions
@@ -111,6 +111,10 @@ class LSystem3D(LSystem2D):
             ).T
 
         self.G.add_node("root", position=np.array([initX, initY, initZ]))
+
+        # Tropism parameters
+        self.T = T
+        self.e = e
     
     # Set up the roll, pitch, and yaw matrices. 
     # These rotation matrices are relative to the current H, L, U matrices. 
@@ -192,11 +196,11 @@ class LSystem3D(LSystem2D):
         # Draw trunk and branches
         for edge in self.G.edges:
             self.t.penup()
-            self.t.goto(-self.G.nodes[edge[0]]["position"][2], self.G.nodes[edge[0]]["position"][1])
+            self.t.goto(-self.G.nodes[edge[0]]["position"][0], self.G.nodes[edge[0]]["position"][1])
             self.t.pendown()
             self.t.pensize(self.G.edges[edge]["diameter"])
             self.t.pencolor(self.G.edges[edge]["color"])
-            self.t.goto(-self.G.nodes[edge[1]]["position"][2], self.G.nodes[edge[1]]["position"][1])
+            self.t.goto(-self.G.nodes[edge[1]]["position"][0], self.G.nodes[edge[1]]["position"][1])
         
         if self.hasLeaf:
             # Draw leaves
@@ -204,7 +208,7 @@ class LSystem3D(LSystem2D):
             for leaf_nodes, leaf_color in zip(self.leaves, self.leaf_colors):
                 self.t.begin_fill()
                 self.t.fillcolor([0.1, leaf_color[1] + 0.1, 0.1])
-                self.t.goto(leaf_nodes[0][00], leaf_nodes[0][1])
+                self.t.goto(leaf_nodes[0][0], leaf_nodes[0][1])
                 for i in range(1, len(leaf_nodes)):
                     self.t.goto(leaf_nodes[i][0], leaf_nodes[i][1])
                 self.t.goto(leaf_nodes[0][0], leaf_nodes[0][1])
@@ -251,6 +255,12 @@ class LSystem3DParametric(LSystem3D):
                 last_node = curr_node
                 node_i += 1
                 curr_node = f"node{node_i}"
+
+                # Tropism
+                HxT = np.cross(self.HLU[:, 0], self.T)
+                HxT_norm = np.linalg.norm(HxT)
+                if HxT_norm:
+                    self.HLU = self.R(HxT/HxT_norm, self.e * HxT_norm) @ self.HLU
             elif tuple_i[0] == 'f':
                 self.penStep = tuple_i[1]
                 self.G.add_node(curr_node, position=(
