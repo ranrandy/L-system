@@ -4,7 +4,12 @@ import os
 
 
 class LSystem2D:
-    def __init__(self, axiom, rules, iterations, delta, FilePath, initX, initY, imageWidth, imageHeight, penColor, penColorIncrementStep, penThickness, penThicknessDecrementStep, penStep, hasLeaf):
+    def __init__(
+            self, axiom, rules, iterations, delta, FilePath, 
+            initX, initY, imageWidth, imageHeight, 
+            penColor, penColorIncrementStep, 
+            penThickness, penThicknessDecrementStep, 
+            penStep, hasLeaf):
         # For generating the sequence of characters
         self.axiom = axiom
         self.rules = rules
@@ -81,7 +86,7 @@ class LSystem2D:
                 self.penThickness -= self.penThicknessDecrementStep
         
     def save(self):
-        # self.screen.update()
+        self.screen.update()
         # Convert the PostScript file to PNG
         self.screen.getcanvas().postscript(file=f"{self.saveFilePath}.eps")
         img = Image.open(f"{self.saveFilePath}.eps")
@@ -122,7 +127,6 @@ class LSystem3D(LSystem2D):
         R = np.identity(3) + np.sin(angle) * K + (1 - np.cos(angle)) * np.dot(K, K)
 
         return R
-
 
     def generate_nodes_edges(self):
         stack = []
@@ -188,11 +192,11 @@ class LSystem3D(LSystem2D):
         # Draw trunk and branches
         for edge in self.G.edges:
             self.t.penup()
-            self.t.goto(self.G.nodes[edge[0]]["position"][0], self.G.nodes[edge[0]]["position"][1])
+            self.t.goto(-self.G.nodes[edge[0]]["position"][2], self.G.nodes[edge[0]]["position"][1])
             self.t.pendown()
             self.t.pensize(self.G.edges[edge]["diameter"])
             self.t.pencolor(self.G.edges[edge]["color"])
-            self.t.goto(self.G.nodes[edge[1]]["position"][0], self.G.nodes[edge[1]]["position"][1])
+            self.t.goto(-self.G.nodes[edge[1]]["position"][2], self.G.nodes[edge[1]]["position"][1])
         
         if self.hasLeaf:
             # Draw leaves
@@ -214,13 +218,10 @@ class LSystem3DParametric(LSystem3D):
         for tuple_i in self.result:
             mapping = self.rules.get(tuple_i[0])
             if mapping:
-                if len(tuple_i) == 1:
-                    if type(mapping()) is list:
-                        result += mapping()
-                    else:
-                        result.append(mapping())
-                else:
-                    result.append(mapping(*tuple_i[1:]))
+                # if len(tuple_i) == 1:
+                #     result += mapping()
+                # else:
+                result += mapping(*tuple_i[1:])
             else:
                 result.append(tuple_i)
         self.result = result
@@ -228,7 +229,6 @@ class LSystem3DParametric(LSystem3D):
     def generate_lsystem(self):
         for _ in range(self.iterations):
             self.apply_rules()
-        # print(self.result)
 
     def generate_nodes_edges(self):
         stack = []
@@ -261,10 +261,18 @@ class LSystem3DParametric(LSystem3D):
                 curr_node = f"node{node_i}"
             elif tuple_i[0] == '+':
                 self.HLU = self.R(self.HLU[:, 2], tuple_i[1] * np.pi / 180.0) @ self.HLU
+            elif tuple_i[0] == '-':
+                self.HLU = self.R(self.HLU[:, 2], -tuple_i[1] * np.pi / 180.0) @ self.HLU
             elif tuple_i[0] == '&':
                 self.HLU = self.R(self.HLU[:, 1], tuple_i[1] * np.pi / 180.0) @ self.HLU
             elif tuple_i[0] == '/':
                 self.HLU = self.R(self.HLU[:, 0], tuple_i[1] * np.pi / 180.0) @ self.HLU
+            elif tuple_i[0] == '$':
+                V = np.array([0, 1, 0])
+                L = np.cross(V, self.HLU[:, 0])
+                L = L / np.linalg.norm(L)
+                U = np.cross(self.HLU[:, 0], L)
+                self.HLU = np.array([self.HLU[:, 0], L, U]).T
             elif tuple_i[0] == '[':
                 stack.append((self.HLU, self.penThickness, self.penStep, self.penColor.copy(), last_node))
             elif tuple_i[0] == ']':

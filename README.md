@@ -41,29 +41,29 @@ The plants images are generated using L-systems from [[1]](http://algorithmicbot
     <table>
         <tr>
             <td>
-                <img src="outputs/l_system_tree_2d_a.png" alt="(a)" width="220">
+                <img src="outputs/l_system_tree_2d_Figure_1_24_a.png" alt="l_system_tree_2d_Figure_1_24_a" width="220">
                 <p align="center">(a)</p>
             </td>
             <td>
-                <img src="outputs/l_system_tree_2d_b.png" alt="(b)" width="220">
+                <img src="outputs/l_system_tree_2d_Figure_1_24_b.png" alt="l_system_tree_2d_Figure_1_24_b" width="220">
                 <p align="center">(b)</p>
             </td>
             <td>
-                <img src="outputs/l_system_tree_2d_c.png" alt="(c)" width="220">
+                <img src="outputs/l_system_tree_2d_Figure_1_24_c.png" alt="l_system_tree_2d_Figure_1_24_c" width="220">
                 <p align="center">(c)</p>
             </td>
         </tr>
         <tr>
             <td>
-                <img src="outputs/l_system_tree_2d_d.png" alt="(d)" width="220">
+                <img src="outputs/l_system_tree_2d_Figure_1_24_d.png" alt="l_system_tree_2d_Figure_1_24_d" width="220">
                 <p align="center">(d)</p>
             </td>
             <td>
-                <img src="outputs/l_system_tree_2d_e.png" alt="(e)" width="220">
+                <img src="outputs/l_system_tree_2d_Figure_1_24_e.png" alt="l_system_tree_2d_Figure_1_24_e" width="220">
                 <p align="center">(e)</p>
             </td>
             <td>
-                <img src="outputs/l_system_tree_2d_f.png" alt="(f)" width="220">
+                <img src="outputs/l_system_tree_2d_Figure_1_24_f.png" alt="l_system_tree_2d_Figure_1_24_f" width="220">
                 <p align="center">(f)</p>
             </td>
         </tr>
@@ -85,7 +85,7 @@ The plants images are generated using L-systems from [[1]](http://algorithmicbot
         - $|$, rotate around $U$ for $180$ degree
     - #### Sample 3D non-parametric trees outputs
         <b style="color:red">IMPORTANT: All the 3D rotations here refer to rotations relative to the current Heading (H), Left (L), and Up (U) directions, but not fixed coordinates like in the traditional yaw, roll, and pitch rotations.</b><br>
-        For simplicity, we only do a orthogonal projection of the 3D tree onto the xy plane. Parameters refer to Fogure 1.25 in Sec 1.6.3 Bracketed OL-systems (p.26) in [1].
+        For simplicity, we only do a orthogonal projection of the 3D tree onto the xy plane. Parameters refer to Figure 1.25 in Sec 1.6.3 Bracketed OL-systems (p.26) in [1].
 <div align="center">
 <img src="outputs/l_system_tree_3d_Figure_1_25.png" alt="(a)" width="500">
 </div>
@@ -99,11 +99,30 @@ The plants images are generated using L-systems from [[1]](http://algorithmicbot
     <!-- <details> -->
     <!-- <summary style="color:red">[Click here] sample 3D parametric trees outputs</summary> -->
     - #### Sample 3D parametric trees outputs
+        <b>IMPORTANT: Originally, we project the 3D tree to the XY plane. But sometimes, to produce the same image as in [1], we need to project to xz plane, or replace x/z with -x/-z.</b>
 <div align="center">
+    <b>Monopodial Tree. Parameters refer to Figure 2.6 in [1]</b>
     <table>
         <tr>
-            <td><img src="outputs/l_system_tree_3d_a.png" alt="(a)" width="500"><p align="center">(a)</p></td>
-            <td><img src="outputs/l_system_tree_3d_b.png" alt="(a)" width="500"><p align="center">(b)</p></td>
+            <td><img src="outputs/l_system_tree_3d_Figure_2_6_a.png" alt="l_system_tree_3d_Figure_2_6_a" width="250"><p align="center">(a)</p></td>
+            <td><img src="outputs/l_system_tree_3d_Figure_2_6_b.png" alt="l_system_tree_3d_Figure_2_6_b" width="250"><p align="center">(b)</p></td>
+            <td><img src="outputs/l_system_tree_3d_Figure_2_6_c.png" alt="l_system_tree_3d_Figure_2_6_c" width="250"><p align="center">(c)</p></td>
+            <td><img src="outputs/l_system_tree_3d_Figure_2_6_d.png" alt="l_system_tree_3d_Figure_2_6_d" width="250"><p align="center">(d)</p></td>
+        </tr>
+    </table>
+    <b>Sympodial Tree. Parameters refer to Figure 2.7 in [1]</b>
+    <table>
+        <tr>
+            <td><img src="outputs/l_system_tree_3d_Figure_2_7_a.png" alt="l_system_tree_3d_Figure_2_7_a" width="250"><p align="center">(a)</p></td>
+            <td><img src="outputs/l_system_tree_3d_Figure_2_7_b.png" alt="l_system_tree_3d_Figure_2_7_b" width="250"><p align="center">(b)</p></td>
+            <td><img src="outputs/l_system_tree_3d_Figure_2_7_c.png" alt="l_system_tree_3d_Figure_2_7_c" width="250"><p align="center">(c)</p></td>
+            <td><img src="outputs/l_system_tree_3d_Figure_2_7_d.png" alt="l_system_tree_3d_Figure_2_7_d" width="250"><p align="center">(d)</p></td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td><img src="outputs/l_system_tree_3d_Figure_2_8_a.png" alt="l_system_tree_3d_Figure_2_8_a" width="500"><p align="center">(a)</p></td>
+            <td><img src="outputs/l_system_tree_3d_Figure_2_8_b.png" alt="l_system_tree_3d_Figure_2_8_b" width="500"><p align="center">(b)</p></td>
         </tr>
     </table>
 </div>
