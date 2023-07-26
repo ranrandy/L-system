@@ -78,7 +78,7 @@ The plants images are generated using L-systems from [[1]](http://algorithmicbot
     - $\delta=\alpha$: (right-hand rule)
         - $+$, rotate around $U$ towards left for $\alpha$ degree
         - $-$, ... right ...
-        - &, rotate around $L$ towards down for $\alpha$ degree
+        - $\&$, rotate around $L$ towards down for $\alpha$ degree
         - $\wedge$, ... up ...
         - $/$, rotate around $H$ towards left for $\alpha$ degree
         - $\backslash$, ... right ...
@@ -92,21 +92,21 @@ The plants images are generated using L-systems from [[1]](http://algorithmicbot
     <!-- </details> -->
 
 * ### Parametric
-    - $\forall s \in \{+, -, \$, \wedge, /, \backslash\}$, s($\alpha$) = rotate with $\alpha$ degree
+    - $\forall s \in \{+, -, \&, \wedge, /, \backslash\}$, s($\alpha$) = rotate with $\alpha$ degree
     - F(l) = move towards $H$ for $l$
     - !(w) = set trunk/branch thickness to $w$
     - $A, B, C \rightarrow A(a_1, a_2, ...), B(...), ...$, do nothing
     <!-- <details> -->
     <!-- <summary style="color:red">[Click here] sample 3D parametric trees outputs</summary> -->
     - #### Sample 3D parametric trees outputs
-    <div align="center">
-        <table>
-            <tr>
-                <td><img src="outputs/l_system_tree_3d_a.png" alt="(a)" width="500"><p align="center">(a)</p></td>
-                <td><img src="outputs/l_system_tree_3d_b.png" alt="(a)" width="500"><p align="center">(b)</p></td>
-            </tr>
-        </table>
-    </div>
+<div align="center">
+    <table>
+        <tr>
+            <td><img src="outputs/l_system_tree_3d_a.png" alt="(a)" width="500"><p align="center">(a)</p></td>
+            <td><img src="outputs/l_system_tree_3d_b.png" alt="(a)" width="500"><p align="center">(b)</p></td>
+        </tr>
+    </table>
+</div>
     <!-- </details> -->
 
 ## Usage
